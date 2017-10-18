@@ -733,6 +733,11 @@ omalloc_init(void)
 	if (getpid() == 1)
 		mopts.malloc_junk = 0;
 
+	if (access("/system/etc/hikey.marker", F_OK) != -1) {
+		mopts.malloc_junk = 0;
+		__libc_format_log(ANDROID_LOG_WARN, "libc", "disabling malloc junk filling for hikey");
+	}
+
 	for (i = 0; i < 3; i++) {
 		switch (i) {
 		case 0:
